@@ -1184,6 +1184,28 @@ class Similarity2 {
   static gtsam::Similarity2 Align(const gtsam::Point2Pairs& abPointPairs);
   static gtsam::Similarity2 Align(const gtsam::Pose2Pairs& abPosePairs);
 
+  // Group
+  static gtsam::Similarity2 Identity();
+  gtsam::Similarity2 inverse() const;
+  gtsam::Similarity2 inverse(Eigen::Ref<Eigen::MatrixXd> H) const;
+  gtsam::Similarity2 compose(const gtsam::Similarity2& similarity) const;
+  gtsam::Similarity2 compose(const gtsam::Similarity2& similarity,
+                       Eigen::Ref<Eigen::MatrixXd> H1,
+                       Eigen::Ref<Eigen::MatrixXd> H2) const;
+  gtsam::Similarity2 between(const gtsam::Similarity2& similarity) const;
+  gtsam::Similarity2 between(const gtsam::Similarity2& similarity,
+                       Eigen::Ref<Eigen::MatrixXd> H1,
+                       Eigen::Ref<Eigen::MatrixXd> H2) const;
+
+  // Operator Overloads
+  gtsam::Similarity2 operator*(const gtsam::Similarity2& similarity) const;
+
+  // Manifold
+  gtsam::Similarity2 retract(gtsam::Vector v) const;
+  gtsam::Similarity2 retract(gtsam::Vector v, Eigen::Ref<Eigen::MatrixXd> Hxi) const;
+  gtsam::Vector localCoordinates(const gtsam::Similarity2& similarity, Eigen::Ref<Eigen::MatrixXd> Hxi) const;
+  gtsam::Vector localCoordinates(const gtsam::Similarity2& similarity) const;
+
   // Lie group
   static gtsam::Similarity2 Expmap(gtsam::Vector v);
   static gtsam::Vector Logmap(const gtsam::Similarity2& p);
@@ -1191,6 +1213,9 @@ class Similarity2 {
   gtsam::Vector logmap(const gtsam::Similarity2& p);
   static gtsam::Matrix Hat(const gtsam::Vector& xi);
   static gtsam::Vector Vee(const gtsam::Matrix& xi);
+
+  // Group Action on Point2
+  gtsam::Point2 transformFrom(const gtsam::Point2& point) const;
 
   // Standard Interface
   bool equals(const gtsam::Similarity2& sim, double tol) const;
@@ -1216,6 +1241,28 @@ class Similarity3 {
   static gtsam::Similarity3 Align(const gtsam::Point3Pairs& abPointPairs);
   static gtsam::Similarity3 Align(const gtsam::Pose3Pairs& abPosePairs);
 
+  // Group
+  static gtsam::Similarity3 Identity();
+  gtsam::Similarity3 inverse() const;
+  gtsam::Similarity3 inverse(Eigen::Ref<Eigen::MatrixXd> H) const;
+  gtsam::Similarity3 compose(const gtsam::Similarity3& similarity) const;
+  gtsam::Similarity3 compose(const gtsam::Similarity3& similarity,
+                       Eigen::Ref<Eigen::MatrixXd> H1,
+                       Eigen::Ref<Eigen::MatrixXd> H2) const;
+  gtsam::Similarity3 between(const gtsam::Similarity3& similarity) const;
+  gtsam::Similarity3 between(const gtsam::Similarity3& similarity,
+                       Eigen::Ref<Eigen::MatrixXd> H1,
+                       Eigen::Ref<Eigen::MatrixXd> H2) const;
+
+  // Operator Overloads
+  gtsam::Similarity3 operator*(const gtsam::Similarity3& similarity) const;
+
+  // Manifold
+  gtsam::Similarity3 retract(gtsam::Vector v) const;
+  gtsam::Similarity3 retract(gtsam::Vector v, Eigen::Ref<Eigen::MatrixXd> Hxi) const;
+  gtsam::Vector localCoordinates(const gtsam::Similarity3& similarity, Eigen::Ref<Eigen::MatrixXd> Hxi) const;
+  gtsam::Vector localCoordinates(const gtsam::Similarity3& similarity) const;
+
   // Lie group
   static gtsam::Similarity3 Expmap(gtsam::Vector v);
   static gtsam::Vector Logmap(const gtsam::Similarity3& p);
@@ -1224,9 +1271,14 @@ class Similarity3 {
   static gtsam::Matrix Hat(const gtsam::Vector& xi);
   static gtsam::Vector Vee(const gtsam::Matrix& xi);
 
+  // Group Action on Point3
+  gtsam::Point3 transformFrom(const gtsam::Point3& point) const;
+  gtsam::Point3 transformFrom(const gtsam::Point3& point, Eigen::Ref<Eigen::MatrixXd> Hself,
+                              Eigen::Ref<Eigen::MatrixXd> Hpoint) const;
+
   // Standard Interface
-  bool equals(const gtsam::Similarity3& sim, double tol) const;
   void print(const std::string& s = "") const;
+  bool equals(const gtsam::Similarity3& sim, double tol) const;
   gtsam::Matrix matrix() const;
   gtsam::Rot3& rotation();
   gtsam::Point3& translation();
